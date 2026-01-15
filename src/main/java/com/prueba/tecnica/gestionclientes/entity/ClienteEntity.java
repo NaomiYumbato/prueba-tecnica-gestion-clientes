@@ -2,15 +2,22 @@ package com.prueba.tecnica.gestionclientes.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "cliente")
 public class ClienteEntity implements Serializable {
     @Serial
@@ -29,4 +36,19 @@ public class ClienteEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_tipo", nullable = false)
     private TipoClienteEntity tipoCliente;
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @CreatedBy
+    @Column(name = "created_by", updatable = false)
+    private String createdBy;
+
+    @LastModifiedDate
+    @Column(name = "modified_at")
+    private LocalDateTime modifiedAt;
+
+    @LastModifiedBy
+    @Column(name = "modified_by")
+    private String modifiedBy;
 }
