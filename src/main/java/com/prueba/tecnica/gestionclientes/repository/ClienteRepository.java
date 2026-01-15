@@ -1,6 +1,7 @@
 package com.prueba.tecnica.gestionclientes.repository;
 
 import com.prueba.tecnica.gestionclientes.dto.ClienteResponseDTO;
+import com.prueba.tecnica.gestionclientes.dto.TotalPorTipoDTO;
 import com.prueba.tecnica.gestionclientes.entity.ClienteEntity;
 
 import java.util.List;
@@ -30,4 +31,7 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer>
             Pageable pageable
     );
     boolean existsByNroDocumento(String nroDocumento);
+
+    @Query(value = "SELECT * FROM rpt_totales_clientes_por_tipo()", nativeQuery = true)
+    List<TotalPorTipoDTO> obtenerTotalesPorTipo();
 }

@@ -2,6 +2,7 @@ package com.prueba.tecnica.gestionclientes.controller;
 
 import com.prueba.tecnica.gestionclientes.dto.ClienteDTO;
 import com.prueba.tecnica.gestionclientes.dto.ClienteResponseDTO;
+import com.prueba.tecnica.gestionclientes.dto.TotalPorTipoDTO;
 import com.prueba.tecnica.gestionclientes.service.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -94,5 +95,10 @@ public class ClienteController {
             response.put("error", e.getMessage());
             return ResponseEntity.status(404).body(response);
         }
+    }
+
+    @GetMapping("/reporte")
+    public ResponseEntity<List<TotalPorTipoDTO>> totalesPorTipo() {
+        return ResponseEntity.ok(clienteService.totalesPorTipo());
     }
 }

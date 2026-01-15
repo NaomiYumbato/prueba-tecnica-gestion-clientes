@@ -2,6 +2,7 @@ package com.prueba.tecnica.gestionclientes.service.impl;
 
 import com.prueba.tecnica.gestionclientes.dto.ClienteDTO;
 import com.prueba.tecnica.gestionclientes.dto.ClienteResponseDTO;
+import com.prueba.tecnica.gestionclientes.dto.TotalPorTipoDTO;
 import com.prueba.tecnica.gestionclientes.entity.ClienteEntity;
 import com.prueba.tecnica.gestionclientes.entity.TipoClienteEntity;
 import com.prueba.tecnica.gestionclientes.repository.ClienteRepository;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -104,5 +107,10 @@ public class ClienteServiceImpl implements ClienteService {
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
         clienteRepository.delete(cliente);
+    }
+
+    @Override
+    public List<TotalPorTipoDTO> totalesPorTipo() {
+        return clienteRepository.obtenerTotalesPorTipo();
     }
 }
