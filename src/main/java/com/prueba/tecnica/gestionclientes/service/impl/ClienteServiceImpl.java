@@ -7,10 +7,11 @@ import com.prueba.tecnica.gestionclientes.entity.TipoClienteEntity;
 import com.prueba.tecnica.gestionclientes.repository.ClienteRepository;
 import com.prueba.tecnica.gestionclientes.repository.TipoClienteRepository;
 import com.prueba.tecnica.gestionclientes.service.ClienteService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -21,8 +22,9 @@ public class ClienteServiceImpl implements ClienteService {
         this.tipoClienteRepository = tipoClienteRepository;
     }
     @Override
-    public List<ClienteResponseDTO> buscarClientesPorFiltro(String nombre, String nroDocumento, Integer tipoCliente) {
-        return clienteRepository.buscarClientesPorFiltro(nombre, nroDocumento, tipoCliente);
+    public Page<ClienteResponseDTO> buscarClientesPorFiltro(String nombre, String nroDocumento, Integer tipoCliente, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return clienteRepository.buscarClientesPorFiltro(nombre, nroDocumento, tipoCliente, pageable);
     }
 
     @Override

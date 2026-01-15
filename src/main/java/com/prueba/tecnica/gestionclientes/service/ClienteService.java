@@ -2,11 +2,9 @@ package com.prueba.tecnica.gestionclientes.service;
 
 import com.prueba.tecnica.gestionclientes.dto.ClienteDTO;
 import com.prueba.tecnica.gestionclientes.dto.ClienteResponseDTO;
-
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 public interface ClienteService {
-    List<ClienteResponseDTO> buscarClientesPorFiltro(String nombre, String nroDocumento, Integer tipoCliente);
+    Page<ClienteResponseDTO> buscarClientesPorFiltro(String nombre, String nroDocumento, Integer tipoCliente, int page, int size);
     ClienteResponseDTO buscarClientePorId(Integer id);
     void registrarCliente(ClienteDTO dto);
     void actualizarTipoCliente(Integer id, Integer idTipo);

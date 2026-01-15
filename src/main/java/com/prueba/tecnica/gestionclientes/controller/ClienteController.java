@@ -4,6 +4,7 @@ import com.prueba.tecnica.gestionclientes.dto.ClienteDTO;
 import com.prueba.tecnica.gestionclientes.dto.ClienteResponseDTO;
 import com.prueba.tecnica.gestionclientes.service.ClienteService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +26,11 @@ public class ClienteController {
     public ResponseEntity<?> buscarClientes(
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) String nroDocumento,
-            @RequestParam(required = false) Integer tipoCliente
+            @RequestParam(required = false) Integer tipoCliente,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ) {
-        List<ClienteResponseDTO> listClientes = clienteService.buscarClientesPorFiltro(nombre, nroDocumento, tipoCliente);
+        Page<ClienteResponseDTO> listClientes = clienteService.buscarClientesPorFiltro(nombre, nroDocumento, tipoCliente, page, size);
 
         if (listClientes.isEmpty()) {
             return ResponseEntity
