@@ -1,0 +1,331 @@
+openapi: 3.1.0
+info:
+  title: API Gestión Clientes
+  description: Documentación de la API REST para clientes
+  version: "1.0"
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/clientes/{id}:
+    get:
+      summary: Buscar cliente por ID
+      operationId: buscarClientePorId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Cliente encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClienteResponseDTO"
+        "404":
+          description: Cliente no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      summary: Actualizar cliente por ID
+      operationId: actualizarClientePorId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClienteRequestDTO"
+      responses:
+        "200":
+          description: Cliente actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClienteResponseDTO"
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Recurso no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      summary: Eliminar cliente por ID
+      operationId: eliminarClientePorId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Cliente eliminado correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+        "404":
+          description: Cliente no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/clientes:
+    get:
+      summary: Filtro para buscar clientes
+      operationId: buscarClientesPorFiltro
+      parameters:
+        - name: nombre
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: nroDocumento
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tipoCliente
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 0
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 10
+      responses:
+        "200":
+          description: Lista de clientes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  content:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/ClienteResponseDTO"
+                  totalElements:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  number:
+                    type: integer
+                  size:
+                    type: integer
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      summary: Registrar cliente
+      operationId: registrarCliente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClienteRequestDTO"
+        required: true
+      responses:
+        "201":
+          description: Cliente registrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClienteResponseDTO"
+        "400":
+          description: Error de validación
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: TipoCliente no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/clientes/{id}/{idTipo}:
+    patch:
+      summary: Actualizar tipo de cliente
+      operationId: actualizarTipoCliente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: idTipo
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: Cliente actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ClienteResponseDTO"
+        "404":
+          description: Recurso no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /api/clientes/reporte:
+    get:
+      summary: Reporte de total de clientes por tipo
+      operationId: totalesPorTipo
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TotalPorTipoDTO"
+        "500":
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+components:
+  schemas:
+    ClienteRequestDTO:
+      type: object
+      properties:
+        nombreCompleto:
+          type: string
+        nroDocumento:
+          type: string
+          pattern: '^\d{8}$'
+        email:
+          type: string
+          format: email
+          maxLength: 100
+        celular:
+          type: string
+        tipoCliente:
+          type: integer
+          format: int32
+      required:
+        - celular
+        - email
+        - nombreCompleto
+        - nroDocumento
+        - tipoCliente
+    ClienteResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombreCompleto:
+          type: string
+        nroDocumento:
+          type: string
+        email:
+          type: string
+        celular:
+          type: string
+        tipoCliente:
+          type: string
+    TotalPorTipoDTO:
+      type: object
+      properties:
+        tipoCliente:
+          type: string
+        total:
+          type: integer
+          format: int64
+      required:
+        - tipoCliente
+        - total
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        message:
+          type: string
+        details:
+          type: array
+          items:
+            type: string
+      required:
+        - timestamp
+        - status
+        - message
+        - details
