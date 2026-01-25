@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: prueba-tecnica-gestion-clientes
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: ${PSQL_DB_URL}
+    username: ${PSQL_DB_USER}
+    password: ${PSQL_DB_PASSWORD}
